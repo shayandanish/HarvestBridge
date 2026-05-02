@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Agro-Investment Platform
 
 A full-stack web platform connecting investors with farmers and landowners for agricultural investments.
@@ -291,3 +292,6 @@ For support, email support@agroinvestment.com or open an issue in the repository
 ---
 
 Built with ❤️ for sustainable agriculture
+=======
+# HarvestBridge
+>>>>>>> e9dff8e29cc6ab9356f5607d10c528cc85bdbc1e
