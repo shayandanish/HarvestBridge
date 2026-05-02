@@ -1,0 +1,825 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Models
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  phone           String?   @unique
+  passwordHash    String    @map("password_hash")
+  fullName        String    @map("full_name")
+  role            String
+  profilePhotoUrl String?   @map("profile_photo_url")
+  isVerified      Boolean   @default(false) @map("is_verified")
+  isActive        Boolean   @default(true) @map("is_active")
+  
+  // Email verification
+  emailVerificationToken   String?   @map("email_verification_token")
+  emailVerificationExpires DateTime? @map("email_verification_expires")
+  
+  // Password reset
+  passwordResetToken       String?   @map("password_reset_token")
+  passwordResetExpires     DateTime? @map("password_reset_expires")
+  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  profile         UserProfile?
+  landowner       Landowner?
+  farmer          Farmer?
+  investments     Investment[]
+  paymentsReceived Payment[]   @relation("PaymentRecipient")
+  reviews          Review[]
+  favorites        Favorite[]
+  notifications    Notification[]
+  bookings         Booking[]
+  deliveryRequests DeliveryRequest[]
+  investorFarms    Farm[]     @relation("InvestorFarms")
+  harvestReviews   HarvestReview[]
+  disputesRaised   Dispute[]      @relation("DisputeRaiser")
+  disputesResolved Dispute[]      @relation("DisputeResolver")
+  settingsUpdated  PlatformSetting[]
+  activityLogs     ActivityLog[]
+  plantationRequests PlantationRequest[]
+  messagesSent     Message[]  @relation("MessageSender")
+  messagesReceived Message[]  @relation("MessageRecipient")
+  notificationsSent Notification[] @relation("NotificationSender")
+
+  @@map("users")
+}
+
+model UserProfile {
+  id              String    @id @default(uuid())
+  userId          String    @unique @map("user_id")
+  addressLine1    String?   @map("address_line1")
+  addressLine2    String?   @map("address_line2")
+  city            String?
+  state           String?
+  country         String?
+  postalCode      String?   @map("postal_code")
+  dateOfBirth     DateTime? @map("date_of_birth")
+  kycDocumentUrl  String?   @map("kyc_document_url")
+  kycVerified     Boolean   @default(false) @map("kyc_verified")
+  bio             String?  
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Landowner {
+  id             String    @id @default(uuid())
+  userId         String    @unique @map("user_id")
+  totalLandArea  Decimal?  @map("total_land_area")
+  landUnit       String? @map("land_unit")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lands          Land[]
+
+  @@map("landowners")
+}
+
+model Land {
+  id                    String    @id @default(uuid())
+  landownerId           String    @map("landowner_id")
+  landName              String    @map("land_name")
+  totalArea             Decimal   @map("total_area")
+  areaUnit              String    @map("area_unit")
+  latitude              Decimal? 
+  longitude             Decimal? 
+  address               String?
+  city                  String?
+  state                 String?
+  country               String?
+  postalCode            String?   @map("postal_code")
+  specificLocation      String?   @map("specific_location")
+  ownershipDocumentUrl  String?   @map("ownership_document_url")
+  landPhotos            String?   @map("land_photos")           // JSON array of photo URLs
+  isVerified            Boolean   @default(false) @map("is_verified")
+  isActive              Boolean   @default(true) @map("is_active")
+  rejectionReason       String?   @map("rejection_reason")
+
+  // Land Ratings (1–5)
+  soilQuality           Int?      @map("soil_quality")
+  waterAvailability     Int?      @map("water_availability")
+  sunlightExposure      Int?      @map("sunlight_exposure")
+  overallRating         Decimal?  @map("overall_rating")
+
+  // Cultivable Plants
+  cultivablePlants      String?   @map("cultivable_plants")    // JSON array of plant values
+
+  // Rental Terms
+  rentalFeeMonthly      Decimal?  @map("rental_fee_monthly")
+  minimumRentalPeriod   Int?      @map("minimum_rental_period") // in months
+
+  // Additional Info
+  additionalNotes       String?   @map("additional_notes")
+
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  landowner             Landowner @relation(fields: [landownerId], references: [id], onDelete: Cascade)
+  farms                 Farm[]
+
+  @@index([landownerId])
+  @@index([isVerified])
+  @@index([isActive])
+  @@map("lands")
+}
+
+model Farmer {
+  id                String    @id @default(uuid())
+  userId            String    @unique @map("user_id")
+  experienceYears   Int?      @map("experience_years")
+  specialization    String?  
+  certifications    String?  
+  rating            Decimal   @default(0)
+  totalReviews      Int       @default(0) @map("total_reviews")
+  bankAccountName   String?   @map("bank_account_name")
+  bankAccountNumber String?   @map("bank_account_number")
+  bankName          String?   @map("bank_name")
+  bankBranch        String?   @map("bank_branch")
+
+  // Public Profile Fields
+  age               Int?
+  location          String?
+  services          String?   // JSON array e.g. ["watering","grafting"]
+  chargesPerTask    Decimal?  @map("charges_per_task")
+  bio               String?
+  isProfilePublic   Boolean   @default(true) @map("is_profile_public")
+  isVerified        Boolean   @default(false) @map("is_verified")
+  rejectionReason   String?   @map("rejection_reason")
+
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  farms             Farm[]
+  harvestReviews    HarvestReview[]
+  reviews           Review[]
+
+  @@map("farmers")
+}
+
+model Farm {
+  id              String    @id @default(uuid())
+  farmerId        String?   @map("farmer_id")
+  investorId      String?   @map("investor_id")
+  landId          String    @map("land_id")
+  farmName        String    @map("farm_name")
+  description     String?  
+  totalArea       Decimal?  @map("total_area")
+  areaUnit        String?   @map("area_unit")
+  isOrganic       Boolean   @default(false) @map("is_organic")
+  isActive        Boolean   @default(true) @map("is_active")
+  isApproved      Boolean   @default(false) @map("is_approved")
+  isLeasePaid     Boolean   @default(false) @map("is_lease_paid")
+  leaseAmount     Decimal?  @map("lease_amount")
+  approvalDate    DateTime? @map("approval_date")
+  rejectionReason String?   @map("rejection_reason")
+  hiringStatus    String    @default("none") @map("hiring_status")
+  isDirectPlanting Boolean  @default(false) @map("is_direct_planting")
+  paymentRequestSent Boolean  @default(false) @map("payment_request_sent")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  farmer          Farmer?   @relation(fields: [farmerId], references: [id], onDelete: SetNull)
+  investor        User?     @relation("InvestorFarms", fields: [investorId], references: [id], onDelete: SetNull)
+  land            Land      @relation(fields: [landId], references: [id], onDelete: Restrict)
+  photos          FarmPhoto[]
+  plants          Plant[]
+  reviews         Review[]
+  favoritedBy     Favorite[]
+  availability    FarmAvailability[]
+  blackoutDates   FarmBlackoutDate[]
+  activities      AdditionalActivity[]
+  bookings        Booking[]
+  harvestReviews  HarvestReview[]
+  payments        Payment[]
+  plantationRequests PlantationRequest[]
+  trackingActivities PlantActivity[]
+  trackingPhotos     PlantPhoto[]
+  trackingMilestones PlantMilestone[]
+
+  @@index([farmerId])
+  @@index([investorId])
+  @@index([landId])
+  @@index([isApproved])
+  @@map("farms")
+}
+
+model FarmPhoto {
+  id           String   @id @default(uuid())
+  farmId       String   @map("farm_id")
+  photoUrl     String   @map("photo_url")
+  caption      String?
+  isPrimary    Boolean  @default(false) @map("is_primary")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  farm         Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([farmId])
+  @@map("farm_photos")
+}
+
+model CropType {
+  id                        String        @id @default(uuid())
+  name                      String        @unique
+  category                  String
+  typicalGrowthDurationDays Int?          @map("typical_growth_duration_days")
+  typicalYieldPerPlant      Decimal?      @map("typical_yield_per_plant")
+  yieldUnit                 String?       @map("yield_unit")
+  description               String?      
+  careInstructions          String?       @map("care_instructions")
+  createdAt                 DateTime      @default(now()) @map("created_at")
+
+  // Relations
+  plants                    Plant[]
+
+  @@map("crop_types")
+}
+
+model Plant {
+  id                  String       @id @default(uuid())
+  farmId              String       @map("farm_id")
+  cropTypeId          String       @map("crop_type_id")
+  uniqueIdentifier    String?      @unique @map("unique_identifier")
+  plantDate           DateTime?    @map("plant_date")
+  status              String       @default("available")
+  growthStatus        String?      @map("growth_status") // e.g., planted, growing, healthy, needs attention
+  locationInFarm      String?      @map("location_in_farm")
+  expectedHarvestDate DateTime?    @map("expected_harvest_date")
+  createdAt           DateTime     @default(now()) @map("created_at")
+  updatedAt           DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  farm                Farm         @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropType            CropType     @relation(fields: [cropTypeId], references: [id], onDelete: Restrict)
+  investments         Investment[]
+  
+  plantationRequestId String?       @map("plantation_request_id")
+  plantationRequest   PlantationRequest? @relation(fields: [plantationRequestId], references: [id], onDelete: SetNull)
+  
+  // Pricing & Yield
+  landFee             Decimal?     @map("land_fee")
+  maintenanceFeeMonthly Decimal?   @map("maintenance_fee_monthly")
+  expectedYield       Decimal?     @map("expected_yield")
+  yieldUnit           String?      @map("yield_unit")
+
+  // Favorites
+  favoritedBy         Favorite[]
+  
+  activities          PlantActivity[]
+  photos              PlantPhoto[]
+  milestones          PlantMilestone[]
+  harvests            Harvest[]
+
+  @@index([farmId])
+  @@index([cropTypeId])
+  @@index([status])
+  @@map("plants")
+}
+
+model Review {
+  id           String      @id @default(uuid())
+  userId       String      @map("user_id")
+  farmId       String?     @map("farm_id")
+  farmerId     String?     @map("farmer_id")
+  investmentId String?     @map("investment_id")
+  rating       Int         @default(5)
+  comment      String? 
+  isApproved   Boolean     @default(true) @map("is_approved")
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  // Relations
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  farm         Farm?       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farmer       Farmer?     @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  investment   Investment? @relation(fields: [investmentId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([farmId])
+  @@index([farmerId])
+  @@index([investmentId])
+  @@map("reviews")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  farmId    String?  @map("farm_id")
+  plantId   String?  @map("plant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  farm      Farm?    @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  plant     Plant?   @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("favorites")
+}
+
+model Investment {
+  id                       String           @id @default(uuid())
+  investorId               String           @map("investor_id")
+  plantId                  String           @map("plant_id")
+  status                   String           @default("pending") // pending, active, completed, cancelled
+  investmentDurationMonths Int              @map("investment_duration_months")
+  startDate                DateTime?        @map("start_date")
+  endDate                  DateTime?        @map("end_date")
+  contractUrl              String?          @map("contract_url")
+  
+  // Financials
+  landFee                  Decimal          @map("land_fee")
+  monthlyFarmerFee         Decimal          @map("monthly_farmer_fee")
+  platformFee              Decimal          @map("platform_fee")
+  totalAmount              Decimal          @map("total_amount")
+  
+  createdAt                DateTime         @default(now()) @map("created_at")
+  updatedAt                DateTime         @updatedAt @map("updated_at")
+
+  // Relations
+  investor                 User             @relation(fields: [investorId], references: [id])
+  plant                    Plant            @relation(fields: [plantId], references: [id])
+  payments                 Payment[]
+  bookings                 Booking[]
+  harvests                 Harvest[]
+  harvestReviews           HarvestReview[]
+  reviews                  Review[]
+  disputes                 Dispute[]
+
+  @@index([investorId])
+  @@index([plantId])
+  @@map("investments")
+}
+
+model Payment {
+  id             String     @id @default(uuid())
+  investmentId   String?    @map("investment_id")
+  farmId         String?    @map("farm_id")
+  amount         Decimal   
+  currency       String     @default("usd")
+  status         String     @default("pending") // pending, completed, failed, refunded
+  type           String?
+  paymentMethod  String?    @map("payment_method") // card, bank_transfer
+  transactionId  String?    @map("transaction_id") // Stripe PaymentIntent ID
+  description    String?
+  bankName       String?    @map("bank_name")
+  accountTitle   String?    @map("account_title")
+  accountNumber  String?    @map("account_number")
+  proofUrl       String?    @map("proof_url")
+  paidAt         DateTime?  @map("paid_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+
+  // Relations
+  investment     Investment? @relation(fields: [investmentId], references: [id])
+  farm           Farm?       @relation(fields: [farmId], references: [id])
+  recipientUser  User?      @relation("PaymentRecipient", fields: [recipientId], references: [id])
+  recipientId    String?    @map("recipient_id")
+
+  @@index([investmentId])
+  @@index([farmId])
+  @@map("payments")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  senderId  String?  @map("sender_id")
+  type      String   // activity_update, message, payment_success, system
+  title     String
+  message   String
+  metadata  String?  // JSON: { farmId, farmName, activityType, etc. }
+  link      String?  // Deep-link path e.g. /farms/:id
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sender    User?    @relation("NotificationSender", fields: [senderId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String   @map("sender_id")
+  recipientId String   @map("recipient_id")
+  content     String
+  isRead      Boolean  @default(false) @map("is_read")
+  isDelivered Boolean  @default(false) @map("is_delivered")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  sender      User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([recipientId])
+  @@map("messages")
+}
+
+model PlantActivity {
+  id           String   @id @default(uuid())
+  plantId      String?  @map("plant_id")
+  farmId       String?  @map("farm_id")
+  activityType String   @map("activity_type") // watering, fertilizing, etc.
+  description  String
+  activityDate DateTime @map("activity_date")
+  notes        String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  plant        Plant?   @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  farm         Farm?    @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([plantId])
+  @@index([farmId])
+  @@map("plant_activities")
+}
+
+model PlantPhoto {
+  id          String   @id @default(uuid())
+  plantId     String?  @map("plant_id")
+  farmId      String?  @map("farm_id")
+  photoUrl    String   @map("photo_url")
+  caption     String?
+  takenDate   DateTime @map("taken_date")
+  isMilestone Boolean  @default(false) @map("is_milestone")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  plant       Plant?    @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  farm        Farm?     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([plantId])
+  @@index([farmId])
+  @@map("plant_photos")
+}
+
+model PlantMilestone {
+  id            String   @id @default(uuid())
+  plantId       String?  @map("plant_id")
+  farmId        String?  @map("farm_id")
+  milestoneType String   @map("milestone_type") // sprouted, flowering, etc.
+  milestoneDate DateTime @map("milestone_date")
+  photoUrl      String?  @map("photo_url")
+  notes         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  plant         Plant?    @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  farm          Farm?     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([plantId])
+  @@index([farmId])
+  @@map("plant_milestones")
+}
+
+model FarmAvailability {
+  id                 String   @id @default(uuid())
+  farmId             String   @map("farm_id")
+  dayOfWeek          String   @map("day_of_week") // monday, tuesday, etc.
+  startTime          String   @map("start_time") // HH:MM
+  endTime            String   @map("end_time") // HH:MM
+  maxVisitorsPerSlot Int      @default(10) @map("max_visitors_per_slot")
+  slotDurationMinutes Int     @default(120) @map("slot_duration_minutes")
+  isActive           Boolean  @default(true) @map("is_active")
+  
+  farm               Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([farmId])
+  @@map("farm_availability")
+}
+
+model FarmBlackoutDate {
+  id          String   @id @default(uuid())
+  farmId      String   @map("farm_id")
+  blackoutDate DateTime @map("blackout_date")
+  reason      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  farm        Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@index([farmId])
+  @@map("farm_blackout_dates")
+}
+
+model AdditionalActivity {
+  id              String   @id @default(uuid())
+  farmId          String   @map("farm_id")
+  activityName    String   @map("activity_name")
+  description     String? 
+  pricePerPerson  Decimal  @map("price_per_person")
+  durationMinutes Int?     @map("duration_minutes")
+  maxParticipants Int?     @map("max_participants")
+  isAvailable     Boolean  @default(true) @map("is_available")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  farm            Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  bookingActivities BookingActivity[]
+
+  @@index([farmId])
+  @@map("additional_activities")
+}
+
+model Booking {
+  id               String            @id @default(uuid())
+  investmentId     String?           @map("investment_id") // Optional, link to specific investment
+  investorId       String            @map("investor_id")
+  farmId           String            @map("farm_id")
+  visitDate        DateTime          @map("visit_date")
+  visitTime        String            @map("visit_time") // HH:MM
+  numberOfGuests   Int               @map("number_of_guests")
+  status           String            @default("pending") // pending, confirmed, cancelled, completed
+  specialRequests  String?           @map("special_requests")
+  confirmationCode String            @unique @map("confirmation_code")
+  qrCodeUrl        String?           @map("qr_code_url")
+  checkedInAt      DateTime?         @map("checked_in_at")
+  totalCost        Decimal           @default(0) @map("total_cost")
+  cancellationReason String?         @map("cancellation_reason")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  investor         User              @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  farm             Farm              @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  investment       Investment?       @relation(fields: [investmentId], references: [id])
+  activities       BookingActivity[]
+
+  @@index([investorId])
+  @@index([farmId])
+  @@index([visitDate])
+  @@map("bookings")
+}
+
+model BookingActivity {
+  id                 String             @id @default(uuid())
+  bookingId          String             @map("booking_id")
+  activityId         String             @map("activity_id")
+  quantity           Int                @default(1)
+  priceAtBooking     Decimal            @map("price_at_booking")
+  
+  booking            Booking            @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  activity           AdditionalActivity @relation(fields: [activityId], references: [id], onDelete: Restrict)
+
+  @@index([bookingId])
+  @@map("booking_activities")
+}
+
+model Harvest {
+  id                 String           @id @default(uuid())
+  plantId            String           @map("plant_id")
+  investmentId       String?          @map("investment_id")
+  harvestDate        DateTime         @map("harvest_date")
+  actualYield        Decimal          @map("actual_yield")
+  yieldUnit          String           @map("yield_unit")
+  qualityGrade        String           @map("quality_grade")
+  farmerNotes        String?          @map("farmer_notes")
+  photoUrls          String?            @map("photo_urls") // Array of strings
+  collectionMethod   String?          @map("collection_method")
+  collectionStatus  String           @default("ready") @map("collection_status")
+  collectionDeadline DateTime?        @map("collection_deadline")
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+
+  // Relations
+  plant              Plant            @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  investment         Investment?      @relation(fields: [investmentId], references: [id])
+  deliveryRequests   DeliveryRequest[]
+  reviews            HarvestReview[]
+
+  @@index([plantId])
+  @@index([investmentId])
+  @@index([collectionStatus])
+  @@map("harvests")
+}
+
+model DeliveryRequest {
+  id                    String         @id @default(uuid())
+  harvestId             String         @map("harvest_id")
+  investorId            String         @map("investor_id")
+  deliveryAddress       String         @map("delivery_address")
+  deliveryCity          String?        @map("delivery_city")
+  deliveryState         String?        @map("delivery_state")
+  deliveryPostalCode    String?        @map("delivery_postal_code")
+  deliveryPhone         String         @map("delivery_phone")
+  preferredDeliveryDate DateTime?      @map("preferred_delivery_date")
+  deliveryInstructions  String?        @map("delivery_instructions")
+  deliveryCost          Decimal?       @map("delivery_cost")
+  deliveryStatus     String           @default("pending") @map("delivery_status")
+  trackingNumber        String?        @map("tracking_number")
+  courierService        String?        @map("courier_service")
+  actualDeliveryDate    DateTime?      @map("actual_delivery_date")
+  createdAt             DateTime       @default(now()) @map("created_at")
+  updatedAt             DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  harvest               Harvest        @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+  investor              User           @relation(fields: [investorId], references: [id], onDelete: Cascade)
+
+  @@index([harvestId])
+  @@index([investorId])
+  @@index([deliveryStatus])
+  @@map("delivery_requests")
+}
+
+model HarvestReview {
+  id                     String    @id @default(uuid())
+  investmentId           String    @map("investment_id")
+  harvestId              String    @map("harvest_id")
+  reviewerId             String    @map("reviewer_id")
+  farmId                 String    @map("farm_id")
+  farmerId               String    @map("farmer_id")
+  rating                 Int       @default(5)
+  reviewText             String?   @map("review_text")
+  yieldSatisfaction      Int       @default(5) @map("yield_satisfaction")
+  qualitySatisfaction    Int       @default(5) @map("quality_satisfaction")
+  experienceSatisfaction Int       @default(5) @map("experience_satisfaction")
+  wouldInvestAgain       Boolean   @default(true) @map("would_invest_again")
+  photos                 String?     @map("photos") // Array of strings
+  isApproved             Boolean   @default(false) @map("is_approved")
+  createdAt              DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  investment             Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  harvest                Harvest    @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+  reviewer               User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  farm                   Farm       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farmer                 Farmer     @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+
+  @@index([investmentId])
+  @@index([harvestId])
+  @@index([reviewerId])
+  @@index([farmId])
+  @@index([farmerId])
+  @@map("harvest_reviews")
+}
+
+model Dispute {
+  id            String        @id @default(uuid())
+  investmentId  String        @map("investment_id")
+  raisedById    String        @map("raised_by_id")
+  disputeType        String           @map("dispute_type")
+  description   String       
+  status        String @default("open")
+  resolution    String?      
+  resolvedById  String?       @map("resolved_by_id")
+  resolvedAt    DateTime?     @map("resolved_at")
+  attachments   String?         @map("attachments") // Array of strings/objects
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  investment    Investment    @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  raisedBy      User          @relation("DisputeRaiser", fields: [raisedById], references: [id], onDelete: Cascade)
+  resolvedBy    User?         @relation("DisputeResolver", fields: [resolvedById], references: [id])
+
+  @@index([investmentId])
+  @@index([raisedById])
+  @@index([status])
+  @@map("disputes")
+}
+
+model PlatformSetting {
+  id            String   @id @default(uuid())
+  settingKey    String   @unique @map("setting_key")
+  settingValue  String     @map("setting_value")
+  description   String? 
+  updatedById   String?  @map("updated_by_id")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  updatedBy     User?    @relation(fields: [updatedById], references: [id])
+
+  @@map("platform_settings")
+}
+
+model EmailCampaign {
+  id              String         @id @default(uuid())
+  name            String
+  subject         String
+  body            String        
+  recipientFilter String           @map("recipient_filter")
+  status          String @default("draft")
+  sentCount       Int            @default(0) @map("sent_count")
+  openedCount     Int            @default(0) @map("opened_count")
+  scheduledAt     DateTime?      @map("scheduled_at")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  @@map("email_campaigns")
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String?  @map("user_id")
+  action      String
+  entityType  String   @map("entity_type")
+  entityId    String?  @map("entity_id")
+  details     String?
+  ipAddress   String?  @map("ip_address")
+  userAgent   String?  @map("user_agent")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user        User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([action])
+  @@index([entityType])
+  @@map("activity_logs")
+}
+
+model Tree {
+  id              String   @id @default(uuid())
+  name            String   @map("tree_name")
+  price           Decimal  @map("price_per_tree")
+  spaceRequired   Decimal  @default(100) @map("space_required") // in spaceUnit
+  spaceUnit       String   @default("SQ FT") @map("space_unit")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  plantationItems PlantationRequestItem[]
+
+  @@map("trees")
+}
+
+model PlantationRequest {
+  id           String   @id @default(uuid())
+  investorId   String   @map("investor_id")
+  farmId       String?  @map("farm_id")
+  totalPrice   Decimal  @map("total_price")
+  status       String   @default("pending") // pending, approved, planted, rejected
+  description  String?  // Optional investor-provided name/description for this request
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  investor     User     @relation(fields: [investorId], references: [id], onDelete: Cascade)
+  farm         Farm?    @relation(fields: [farmId], references: [id], onDelete: SetNull)
+  items        PlantationRequestItem[]
+  plants       Plant[]
+
+  @@index([investorId])
+  @@index([farmId])
+  @@map("plantation_requests")
+}
+
+model PlantationRequestItem {
+  id                  String   @id @default(uuid())
+  plantationRequestId String   @map("plantation_request_id")
+  treeId              String   @map("tree_id")
+  quantity            Int
+  pricePerTree        Decimal  @map("price_per_tree")
+  totalPrice          Decimal  @map("total_price")
+
+  request             PlantationRequest @relation(fields: [plantationRequestId], references: [id], onDelete: Cascade)
+  tree                Tree              @relation(fields: [treeId], references: [id], onDelete: Restrict)
+
+  @@index([plantationRequestId])
+  @@index([treeId])
+  @@map("plantation_request_items")
+}
+
+
+
+
+
+

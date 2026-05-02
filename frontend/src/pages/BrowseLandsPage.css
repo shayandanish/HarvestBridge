@@ -1,0 +1,225 @@
+/* BrowseLandsPage.css */
+
+.browse-lands-container {
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.browse-hero {
+    background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.browse-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 70% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Glassmorphism Filters */
+.glass-filters {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2rem;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+    margin-top: -3rem;
+    position: relative;
+    z-index: 10;
+}
+
+.filter-input-group {
+    position: relative;
+}
+
+.filter-icon {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981;
+    font-size: 1.25rem;
+}
+
+.premium-input {
+    width: 100%;
+    background: white;
+    border: 1px solid #f1f5f9;
+    border-radius: 1.25rem;
+    padding: 0.875rem 1rem 0.875rem 3.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.premium-input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    background: white;
+}
+
+.premium-search-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.875rem 1.5rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.premium-search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.5);
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+/* Land Cards */
+.land-card {
+    background: white;
+    border-radius: 2rem;
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.land-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.land-image-container {
+    position: relative;
+    height: 16rem;
+    overflow: hidden;
+}
+
+.land-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.land-card:hover .land-image {
+    transform: scale(1.1);
+}
+
+.verified-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(16, 185, 129, 0.95);
+    backdrop-filter: blur(4px);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 3rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.area-tag {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    color: #065f46;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Farmer Preview */
+.farmer-micro-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f1f5f9;
+}
+
+.farmer-avatar-mini {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #475569;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.land-btn-premium {
+    width: 100%;
+    background: #f0fdf4;
+    color: #059669;
+    font-weight: 800;
+    padding: 1rem;
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+    border: 1px solid #dcfce7;
+    margin-top: auto;
+}
+
+.land-card:hover .land-btn-premium {
+    background: #059669;
+    color: white;
+    box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Loading States */
+.loading-shimmer {
+    background: linear-gradient(90deg, #f1f5f9 25%, #f8fafc 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 20px -30px;
+        }
+
+        .content {
+            margin: 20px 0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Farm Approved!</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{name}},</p>
+            <p>Congratulations! Your farm <strong>{{farmName}}</strong> has been approved by our admin team.</p>
+            <p>Your farm is now active on the platform and ready for plant management and investment opportunities.</p>
+            <p>You can now:</p>
+            <ul>
+                <li>Add plants to your farm</li>
+                <li>Manage farm details and photos</li>
+                <li>Track plant growth and harvest schedules</li>
+                <li>Receive investments from sponsors</li>
+            </ul>
+            <p>Thank you for being part of the Agro Investment Platform!</p>
+        </div>
+        <div class="footer">
+            <p>© 2024 Agro Investment Platform. All rights reserved.</p>
+            <p>If you have any questions, please contact our support team.</p>
+        </div>
+    </div>
+</body>
+
+</html>

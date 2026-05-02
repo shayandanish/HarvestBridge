@@ -1,0 +1,330 @@
+{
+    "info": {
+        "name": "Agro Investment Platform API",
+        "description": "Complete API collection for Agro Investment Platform authentication and profile management",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5000/api/v1",
+            "type": "string"
+        },
+        {
+            "key": "accessToken",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"Test User\",\n  \"role\": \"investor\",\n  \"phone\": \"+1234567890\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/register"
+                        }
+                    }
+                },
+                {
+                    "name": "Verify Email",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"token\": \"your-verification-token\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/verify-email"
+                        }
+                    }
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login"
+                        }
+                    }
+                },
+                {
+                    "name": "Forgot Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/forgot-password"
+                        }
+                    }
+                },
+                {
+                    "name": "Reset Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"token\": \"your-reset-token\",\n  \"newPassword\": \"newpassword123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/reset-password"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Current User",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/me"
+                        }
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/logout"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Profile Management",
+            "item": [
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/profile"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Profile",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"addressLine1\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"country\": \"USA\",\n  \"postalCode\": \"10001\",\n  \"bio\": \"Passionate about agriculture\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile"
+                        }
+                    }
+                },
+                {
+                    "name": "Upload Profile Photo",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "photo",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/photo"
+                        }
+                    }
+                },
+                {
+                    "name": "Upload KYC Document",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "document",
+                                    "type": "file",
+                                    "src": ""
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/kyc"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Farmer Profile",
+            "item": [
+                {
+                    "name": "Create/Update Farmer Profile",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"experienceYears\": 10,\n  \"specialization\": \"Organic farming\",\n  \"certifications\": \"Organic certification\",\n  \"bankAccountName\": \"John Doe\",\n  \"bankAccountNumber\": \"1234567890\",\n  \"bankName\": \"Bank of America\",\n  \"bankBranch\": \"Main Branch\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/farmer/profile"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Farmer Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/farmer/profile"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Landowner Profile",
+            "item": [
+                {
+                    "name": "Create/Update Landowner Profile",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"totalLandArea\": 50.5,\n  \"landUnit\": \"acre\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/landowner/profile"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Landowner Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/landowner/profile"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

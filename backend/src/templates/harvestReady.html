@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Harvest is Ready!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #22c55e;
+        }
+
+        .logo {
+            font-size: 32px;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px 0;
+        }
+
+        h1 {
+            color: #22c55e;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #22c55e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🌱 Agro Investment</div>
+        </div>
+        <div class="content">
+            <h1>Great News, {{name}}!</h1>
+            <p>Your sponsored plant <strong>{{plantName}}</strong> at <strong>{{farmName}}</strong> has been harvested
+                and is ready for you!</p>
+
+            <div class="details">
+                <p><strong>Actual Yield:</strong> {{yield}}</p>
+                <p><strong>Quality Grade:</strong> {{quality}}</p>
+                <p><strong>Collection Deadline:</strong> {{deadline}}</p>
+            </div>
+
+            <p>Please log in to your dashboard to select your preferred collection method. You can choose to have it
+                delivered to your home, collect it yourself, or donate it to a local charity.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{dashboardUrl}}" class="btn">Select Collection Method</a>
+            </div>
+
+            <p>If you don't select a collection method by the deadline, the produce will be forfeited to the farmer.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Agro Investment Platform. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>

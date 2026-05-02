@@ -1,0 +1,366 @@
+/* My Farmer Profile (Internal Management) Styles */
+
+.farmer-profile-mgmt {
+    min-height: 100vh;
+    background: #f8fafc;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    padding: 32px 16px 120px;
+}
+
+/* Page Header */
+.mgmt-header {
+    max-width: 850px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.mgmt-back-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 10px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+}
+
+.mgmt-back-btn:hover {
+    background: #f1f5f9;
+    transform: translateX(-5px);
+}
+
+.mgmt-title-group h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.mgmt-subtitle {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* Banner Notifications */
+.status-banner-mgmt {
+    max-width: 850px;
+    margin: 0 auto 24px;
+}
+
+.banner-card {
+    padding: 20px 24px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.banner-card.verified {
+    background: #f0fdf4;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.banner-card.pending {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+.banner-card.rejected {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.banner-icon {
+    font-size: 24px;
+}
+
+.banner-text h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.banner-text p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Form Layout */
+.mgmt-form {
+    max-width: 850px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.mgmt-card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.mgmt-card-title {
+    margin: 0 0 24px;
+    font-size: 19px;
+    font-weight: 800;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mgmt-card-title i {
+    color: #10b981;
+}
+
+/* Photo Section */
+.mgmt-photo-row {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+.mgmt-avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 32px;
+    object-fit: cover;
+    border: 4px solid #f1f5f9;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.mgmt-upload-btn {
+    background: #10b981;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+.mgmt-upload-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+/* Input Fields */
+.mgmt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.mgmt-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mgmt-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    margin-left: 4px;
+}
+
+.mgmt-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s;
+    color: #1e293b;
+}
+
+.mgmt-input:focus {
+    border-color: #10b981;
+    background-color: #fff;
+}
+
+.mgmt-textarea {
+    width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s;
+    resize: vertical;
+    min-height: 120px;
+    color: #1e293b;
+}
+
+.mgmt-textarea:focus {
+    border-color: #10b981;
+    background-color: #fff;
+}
+
+/* Service Chips */
+.mgmt-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.mgmt-chip {
+    padding: 10px 20px;
+    border-radius: 14px;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mgmt-chip:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+}
+
+.mgmt-chip.active {
+    background: #f0fdf4;
+    border-color: #10b981;
+    color: #065f46;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.1);
+}
+
+/* Checkbox Switch */
+.mgmt-switch-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 10px;
+}
+
+.mgmt-checkbox {
+    width: 22px;
+    height: 22px;
+    accent-color: #10b981;
+    cursor: pointer;
+}
+
+.mgmt-switch-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.mgmt-switch-info p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Save Button */
+.mgmt-save-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #e2e8f0;
+    z-index: 100;
+}
+
+.mgmt-save-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 40px;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    font-weight: 800;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.mgmt-save-btn:hover:not(:disabled) {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 30px -10px rgba(16, 185, 129, 0.5);
+}
+
+.mgmt-save-btn:disabled {
+    background: #cbd5e1;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Toast */
+.mgmt-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    padding: 16px 24px;
+    border-radius: 16px;
+    color: #fff;
+    font-weight: 700;
+    z-index: 9999;
+    animation: toastScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes toastScale {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mgmt-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mgmt-card {
+        padding: 24px;
+    }
+    
+    .mgmt-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .mgmt-back-btn {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+    }
+}

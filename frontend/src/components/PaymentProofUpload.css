@@ -1,0 +1,356 @@
+.proof-upload-container {
+    padding: 10px 0;
+}
+
+.payment-method-selector {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.method-tab {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.method-tab.active {
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.method-tab.easypaisa.active {
+    background: #10b981;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.method-tab.jazzcash.active {
+    background: #ef4444;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.account-details-card {
+    background: linear-gradient(135deg, var(--brand-color), #000);
+    border-radius: 24px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%);
+    pointer-events: none;
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.method-logo-small {
+    height: 32px;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.detail-row {
+    margin-bottom: 16px;
+}
+
+.detail-row label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.value-with-copy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+.value-with-copy.large .value {
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.value-with-copy button {
+    color: rgba(255, 255, 255, 0.5);
+    padding: 4px;
+    transition: all 0.2s;
+}
+
+.value-with-copy button:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+.amount-highlight {
+    background: rgba(255, 255, 255, 1);
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.amount-highlight .label {
+    color: #475569;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.amount-highlight .amount {
+    color: #0f172a;
+    font-size: 24px;
+}
+
+.upload-instructions {
+    margin-bottom: 24px;
+}
+
+.upload-instructions h3 {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #e2e8f0;
+}
+
+.upload-instructions ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.upload-instructions li {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    padding-left: 28px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.upload-instructions li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--brand-color, #10b981);
+    font-weight: 900;
+}
+
+.upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.02);
+    margin-bottom: 24px;
+}
+
+.upload-area:hover {
+    border-color: var(--brand-color, #10b981);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.upload-placeholder .icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.upload-placeholder p {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.upload-placeholder span {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.preview-wrap {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 160px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.preview-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.preview-wrap:hover .preview-overlay {
+    opacity: 1;
+}
+
+.preview-overlay span {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: white;
+    color: black;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+.proof-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.action-buttons button {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.cancel-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.submit-btn {
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.submit-btn.disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed;
+}
+
+.privacy-note {
+    font-size: 10px;
+    color: #64748b;
+    text-align: center;
+    margin-top: 24px;
+    font-weight: 600;
+}
+
+.privacy-note i {
+    margin-right: 4px;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+    .payment-method-selector {
+        gap: 8px;
+    }
+    
+    .method-tab {
+        font-size: 11px;
+        padding: 10px 4px;
+    }
+    
+    .account-details-card {
+        padding: 16px;
+    }
+    
+    .value-with-copy.large .value {
+        font-size: 16px;
+    }
+    
+    .amount-highlight .amount {
+        font-size: 20px;
+    }
+    
+    .upload-area {
+        padding: 20px 10px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+    }
+}

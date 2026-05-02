@@ -1,0 +1,29 @@
+.activity-logs .action-tag {
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.activity-logs .filters-bar {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.date-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-filters input {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+}

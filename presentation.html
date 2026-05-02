@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HarvestBridge — Competition Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-900: #14532d;
+      --green-800: #166534;
+      --green-700: #15803d;
+      --green-600: #16a34a;
+      --green-500: #22c55e;
+      --green-400: #4ade80;
+      --green-300: #86efac;
+      --green-100: #dcfce7;
+      --green-50:  #f0fdf4;
+      --amber-400: #fbbf24;
+      --amber-300: #fcd34d;
+      --sky-400:   #38bdf8;
+      --rose-400:  #fb7185;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+      --white:     #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--slate-900);
+      color: var(--white);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ─── SLIDE SHELL ─────────────────────────────────────── */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 80px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+      transform: translateX(60px);
+      overflow: hidden;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0);
+    }
+    .slide.exit {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+
+    /* ─── BACKGROUNDS ─────────────────────────────────────── */
+    .bg-dark   { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+    .bg-forest { background: linear-gradient(135deg, #052e16 0%, #14532d 60%, #0f172a 100%); }
+    .bg-amber  { background: linear-gradient(135deg, #78350f 0%, #92400e 60%, #0f172a 100%); }
+    .bg-sky    { background: linear-gradient(135deg, #0c4a6e 0%, #075985 60%, #0f172a 100%); }
+    .bg-rose   { background: linear-gradient(135deg, #881337 0%, #9f1239 60%, #0f172a 100%); }
+    .bg-purple { background: linear-gradient(135deg, #3b0764 0%, #4c1d95 60%, #0f172a 100%); }
+
+    /* floating orb decoration */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      opacity: .35;
+    }
+
+    /* ─── TYPOGRAPHY ──────────────────────────────────────── */
+    .slide-num {
+      position: absolute;
+      top: 28px; right: 40px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      color: rgba(255,255,255,.3);
+      text-transform: uppercase;
+    }
+    .tag {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+    }
+    .tag-green  { background: rgba(34,197,94,.15); color: var(--green-400); border: 1px solid rgba(34,197,94,.3); }
+    .tag-amber  { background: rgba(251,191,36,.15); color: var(--amber-300); border: 1px solid rgba(251,191,36,.3); }
+    .tag-sky    { background: rgba(56,189,248,.15); color: var(--sky-400);   border: 1px solid rgba(56,189,248,.3); }
+    .tag-rose   { background: rgba(251,113,133,.15); color: var(--rose-400); border: 1px solid rgba(251,113,133,.3); }
+    .tag-white  { background: rgba(255,255,255,.1);  color: rgba(255,255,255,.8); border: 1px solid rgba(255,255,255,.2); }
+
+    h1.hero { font-size: clamp(2.8rem,5vw,4.5rem); font-weight: 900; line-height: 1.08; text-align: center; }
+    h2.title { font-size: clamp(2rem,3.5vw,3rem);  font-weight: 900; line-height: 1.15; }
+    p.sub    { font-size: clamp(.95rem,1.5vw,1.2rem); color: rgba(255,255,255,.6); line-height: 1.75; font-weight: 400; }
+    .accent  { color: var(--green-400); }
+    .accent-amber { color: var(--amber-300); }
+    .accent-sky   { color: var(--sky-400); }
+
+    /* ─── CARDS ───────────────────────────────────────────── */
+    .card-grid { display: grid; gap: 20px; width: 100%; }
+    .g2 { grid-template-columns: repeat(2,1fr); }
+    .g3 { grid-template-columns: repeat(3,1fr); }
+    .g4 { grid-template-columns: repeat(4,1fr); }
+
+    .card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 28px 24px;
+      backdrop-filter: blur(12px);
+      transition: transform .25s, background .25s;
+    }
+    .card:hover { transform: translateY(-4px); background: rgba(255,255,255,.09); }
+    .card-icon  { font-size: 2rem; margin-bottom: 12px; }
+    .card h3    { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
+    .card p     { font-size: .82rem; color: rgba(255,255,255,.55); line-height: 1.6; }
+
+    /* ─── ROLE CARDS ──────────────────────────────────────── */
+    .role-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s;
+    }
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .role-card.investor::before { background: var(--amber-400); }
+    .role-card.farmer::before   { background: var(--green-500); }
+    .role-card.landowner::before { background: var(--sky-400); }
+    .role-card.admin::before    { background: var(--rose-400); }
+    .role-card:hover { transform: translateY(-5px); }
+    .role-icon { font-size: 2.5rem; margin-bottom: 14px; display: block; }
+    .role-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; }
+    .role-list  { list-style: none; }
+    .role-list li { font-size: .78rem; color: rgba(255,255,255,.6); padding: 4px 0; padding-left: 16px; position: relative; }
+    .role-list li::before { content: '→'; position: absolute; left: 0; color: var(--green-400); font-weight: 700; }
+
+    /* ─── FLOW STEPS ──────────────────────────────────────── */
+    .flow-wrap { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 16px 20px;
+      transition: background .25s, transform .25s;
+    }
+    .flow-step:hover { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.25); transform: translateX(6px); }
+    .flow-num {
+      min-width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--green-600), var(--green-400));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 900;
+      flex-shrink: 0;
+    }
+    .flow-text h4 { font-size: .92rem; font-weight: 800; margin-bottom: 3px; }
+    .flow-text p  { font-size: .75rem; color: rgba(255,255,255,.5); line-height: 1.5; }
+
+    /* ─── ARCH DIAGRAM ────────────────────────────────────── */
+    .arch {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      width: 100%;
+    }
+    .arch-row  { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .arch-box {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 14px;
+      padding: 14px 22px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .arch-box .icon  { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+    .arch-box .label { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+    .arch-box .sub   { font-size: .65rem; color: rgba(255,255,255,.45); margin-top: 3px; }
+    .arch-arrow { font-size: 1.4rem; color: var(--green-400); opacity: .7; }
+    .arch-box.green-glow { border-color: rgba(34,197,94,.5); box-shadow: 0 0 20px rgba(34,197,94,.15); }
+    .arch-box.amber-glow { border-color: rgba(251,191,36,.4); box-shadow: 0 0 20px rgba(251,191,36,.1); }
+
+    /* ─── TECH TABLE ──────────────────────────────────────── */
+    .tech-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+    .tech-table th {
+      text-align: left; padding: 10px 14px;
+      color: var(--green-400); font-size: .68rem;
+      font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .tech-table td {
+      padding: 10px 14px; color: rgba(255,255,255,.75);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .tech-table tr:hover td { background: rgba(34,197,94,.05); }
+    .pill {
+      display: inline-block; padding: 3px 10px; border-radius: 999px;
+      font-size: .65rem; font-weight: 800;
+      background: rgba(34,197,94,.15); color: var(--green-400);
+      border: 1px solid rgba(34,197,94,.3);
+    }
+
+    /* ─── SECURITY ────────────────────────────────────────── */
+    .sec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; width: 100%; }
+    .sec-item {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .sec-item .s-icon { font-size: 1.8rem; }
+    .sec-item .s-title { font-size: .85rem; font-weight: 800; }
+    .sec-item .s-desc  { font-size: .73rem; color: rgba(255,255,255,.5); line-height: 1.5; }
+    .check { color: var(--green-400); font-weight: 900; margin-right: 6px; }
+
+    /* ─── ROADMAP ─────────────────────────────────────────── */
+    .road-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; width: 100%; }
+    .road-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .road-badge {
+      padding: 4px 10px; border-radius: 8px;
+      font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em;
+      white-space: nowrap;flex-shrink: 0;
+    }
+    .badge-high   { background: rgba(251,113,133,.2); color: var(--rose-400); }
+    .badge-medium { background: rgba(251,191,36,.15); color: var(--amber-300); }
+    .badge-future { background: rgba(56,189,248,.15); color: var(--sky-400); }
+    .road-item h4 { font-size: .85rem; font-weight: 800; margin-bottom: 4px; }
+    .road-item p  { font-size: .73rem; color: rgba(255,255,255,.5); }
+
+    /* ─── CLOSING ─────────────────────────────────────────── */
+    .stat-row { display: flex; gap: 40px; justify-content: center; margin-top: 30px; }
+    .stat { text-align: center; }
+    .stat .val { font-size: 2.8rem; font-weight: 900; color: var(--green-400); }
+    .stat .lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,.45); margin-top: 4px; }
+
+    /* ─── NAV BAR ─────────────────────────────────────────── */
+    .nav-bar {
+      position: fixed;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(15,23,42,.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      padding: 10px 20px;
+      z-index: 100;
+    }
+    .nav-bar button {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,.5);
+      font-size: 1.1rem; padding: 6px 10px;
+      border-radius: 8px;
+      transition: background .2s, color .2s;
+    }
+    .nav-bar button:hover { background: rgba(255,255,255,.1); color: white; }
+    .nav-counter { font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.4); min-width: 54px; text-align: center; }
+    .dot-row { display: flex; gap: 5px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); cursor: pointer; transition: background .2s, transform .2s; }
+    .dot.active { background: var(--green-400); transform: scale(1.4); }
+
+    /* ─── PROGRESS BAR ────────────────────────────────────── */
+    .progress-bar {
+      position: fixed; top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green-600), var(--green-400), var(--amber-400));
+      transition: width .4s ease;
+      z-index: 200;
+    }
+
+    /* ─── TITLE SLIDE EXTRAS ──────────────────────────────── */
+    .hero-tag { margin-bottom: 24px; }
+    .hero-selected {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3);
+      border-radius: 14px; padding: 12px 24px;
+      font-size: .9rem; font-weight: 800; color: var(--amber-300);
+      margin-top: 30px;
+    }
+
+    /* ─── QUOTE ───────────────────────────────────────────── */
+    .quote {
+      background: rgba(34,197,94,.08);
+      border-left: 4px solid var(--green-500);
+      border-radius: 0 14px 14px 0;
+      padding: 20px 26px;
+      font-size: .9rem;
+      font-style: italic;
+      color: rgba(255,255,255,.75);
+      line-height: 1.7;
+      margin-top: 18px;
+    }
+
+    /* split layout */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; width: 100%; align-items: center; }
+    .split-left { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ─── PROBLEM TABLE ───────────────────────────────────── */
+    .prob-table { width: 100%; border-collapse: collapse; }
+    .prob-table th { text-align: left; padding: 10px 14px; font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--rose-400); border-bottom: 1px solid rgba(255,255,255,.1); }
+    .prob-table td { padding: 12px 14px; font-size: .8rem; border-bottom: 1px solid rgba(255,255,255,.05); color: rgba(255,255,255,.75); }
+    .prob-table tr:hover td { background: rgba(251,113,133,.05); }
+
+    /* ─── WHY WE BUILT ────────────────────────────────────── */
+    .why-list { display: flex; flex-direction: column; gap: 12px; }
+    .why-item { display: flex; align-items: flex-start; gap: 16px; }
+    .why-num {
+      min-width: 38px; height: 38px;
+      background: rgba(34,197,94,.15);
+      border: 1px solid rgba(34,197,94,.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; font-weight: 900; color: var(--green-400);
+      flex-shrink: 0;
+    }
+    .why-text h4 { font-size: .9rem; font-weight: 800; margin-bottom: 4px; }
+    .why-text p  { font-size: .76rem; color: rgba(255,255,255,.5); line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .slide { padding: 40px 30px; }
+      .g3, .g4 { grid-template-columns: repeat(2,1fr); }
+      .split { grid-template-columns: 1fr; gap: 24px; }
+      .sec-grid { grid-template-columns: repeat(2,1fr); }
+      .road-grid { grid-template-columns: 1fr; }
+      h1.hero { font-size: 2.2rem; }
+    }
+
+    /* ─── TITLE GLOW ──────────────────────────────────────── */
+    .glow-text {
+      text-shadow: 0 0 80px rgba(34,197,94,.4);
+    }
+
+    .db-entity {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: .72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .db-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+    .db-arrow { text-align: center; font-size: 1.2rem; color: var(--green-400); opacity: .6; margin: 4px 0; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1 — TITLE ═══════════════════════════════════════════════ -->
+  <section class="slide bg-forest active" data-index="0">
+    <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,#16a34a,transparent);top:-150px;right:-150px;"></div>
+    <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,#0f4c1e,transparent);bottom:-100px;left:-50px;"></div>
+    <span class="slide-num">01 / 12</span>
+
+    <span class="tag tag-green hero-tag">🏆 Selected Project — Competition Presentation</span>
+    <h1 class="hero glow-text">🌱 HarvestBridge</h1>
+    <p class="sub" style="margin-top:18px;max-width:640px;text-align:center;">
+      An Agricultural Investment Marketplace connecting <strong style="color:white;">Investors, Farmers & Landowners</strong> — transparently, securely, and profitably.
+    </p>
+    <div class="hero-selected">
+      🏅 &nbsp; Selected Among Competition Projects &nbsp;·&nbsp; Full-Stack Web Platform
+    </div>
+
+    <div class="card-grid g3" style="margin-top:44px;max-width:700px;">
+      <div class="card" style="text-align:center;">
+        <div class="card-icon">💼</div>
+        <div class="card h3">Investors</div>
+        <p class="card p">Own & track trees</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-icon">🧑‍🌾</div>
+        <div class="card h3">Farmers</div>
+        <p class="card p">Grow & report</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-icon">🏡</div>
+        <div class="card h3">Landowners</div>
+        <p class="card p">Lease & earn</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 2 — PROBLEM ══════════════════════════════════════════════ -->
+  <section class="slide bg-rose" data-index="1">
+    <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,#9f1239,transparent);top:-80px;right:-80px;"></div>
+    <span class="slide-num">02 / 12</span>
+
+    <div class="split">
+      <div class="split-left">
+        <span class="tag tag-rose">❗ The Problem</span>
+        <h2 class="title">There is a <span class="accent-amber">broken bridge</span> between capital & cultivation</h2>
+        <p class="sub">Pakistan's agriculture GDP contributes <strong style="color:white;">24%</strong> to the economy — yet small farmers remain underfunded and investors have no transparent, reliable channel to enter the sector.</p>
+        <div class="quote">
+          "A farmer has land, skill, and time. An investor has capital and appetite for returns. There was no trusted platform to bring them together — until now."
+        </div>
+      </div>
+      <div>
+        <table class="prob-table">
+          <thead>
+            <tr><th>Stakeholder</th><th>Core Pain</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>🧑‍🌾 Farmers</td><td>No capital to plant trees or scale</td></tr>
+            <tr><td>🏡 Landowners</td><td>Idle land earning nothing</td></tr>
+            <tr><td>💼 Investors</td><td>No transparent agri-investment channel</td></tr>
+            <tr><td>🌍 Society</td><td>Deforestation & food insecurity rising</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:24px;" class="card">
+          <div class="card-icon">💡</div>
+          <div style="font-size:.88rem;font-weight:800;margin-bottom:6px;">The Real Gap</div>
+          <p class="card p">No centralized, digital platform exists that verifies all three parties and manages the full lifecycle — from land lease to harvest payout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 3 — WHY WE BUILT THIS ═══════════════════════════════════ -->
+  <section class="slide bg-amber" data-index="2">
+    <div class="orb" style="width:450px;height:450px;background:radial-gradient(circle,#92400e,transparent);bottom:-100px;left:-100px;"></div>
+    <span class="slide-num">03 / 12</span>
+
+    <div class="split">
+      <div class="split-left">
+        <span class="tag tag-amber">🎯 Why This Project?</span>
+        <h2 class="title">5 Reasons we <span class="accent-amber">chose</span> this idea</h2>
+        <p class="sub">This is more than a college project — it's a viable business solving a real problem in Pakistan's agricultural economy.</p>
+      </div>
+      <div class="why-list">
+        <div class="why-item">
+          <div class="why-num">01</div>
+          <div class="why-text"><h4>Real-World Impact</h4><p>Connects underserved farmers with capital — directly tackling financial exclusion in rural Pakistan.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">02</div>
+          <div class="why-text"><h4>Technical Depth</h4><p>4 user roles, financial flows, media management, JWT security — genuine engineering complexity.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">03</div>
+          <div class="why-text"><h4>Environmental Value</h4><p>Every tree planted offsets CO₂ — aligned with Pakistan's 10 Billion Tree Tsunami initiative.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">04</div>
+          <div class="why-text"><h4>Scalable Business Model</h4><p>Platform fees on investments + lease commissions = sustainable revenue from day one.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">05</div>
+          <div class="why-text"><h4>Production-Ready</h4><p>Not a prototype — it's a fully deployed full-stack system with auth, financials, and media.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 4 — SOLUTION ═════════════════════════════════════════════ -->
+  <section class="slide bg-forest" data-index="3">
+    <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,#15803d,transparent);top:-80px;left:-80px;"></div>
+    <span class="slide-num">04 / 12</span>
+
+    <span class="tag tag-green">💡 Our Solution</span>
+    <h2 class="title" style="text-align:center;max-width:750px;">HarvestBridge — The <span class="accent">complete ecosystem</span> for agricultural investment</h2>
+    <p class="sub" style="text-align:center;max-width:600px;margin:12px 0 28px;">One platform, four roles, infinite possibilities. We manage the full lifecycle from land registration to harvest payout.</p>
+
+    <div class="card-grid g4" style="max-width:900px;">
+      <div class="card" style="border-top:3px solid var(--amber-400);">
+        <div class="card-icon">💼</div>
+        <h3>Investor</h3>
+        <p>Browse marketplace, invest in specific trees, track growth via photos, receive harvest returns.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--green-500);">
+        <div class="card-icon">🧑‍🌾</div>
+        <h3>Farmer</h3>
+        <p>Build verified profile, get hired, manage farms, log growth with photos, report yields.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--sky-400);">
+        <div class="card-icon">🏡</div>
+        <h3>Landowner</h3>
+        <p>Register land parcels, lease to verified farmers, earn passive income from their land.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--rose-400);">
+        <div class="card-icon">🛡️</div>
+        <h3>Admin</h3>
+        <p>Approve users, monitor investments, moderate content, manage payments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 5 — ARCHITECTURE ═════════════════════════════════════════ -->
+  <section class="slide bg-dark" data-index="4">
+    <div class="orb" style="width:380px;height:380px;background:radial-gradient(circle,#1e3a5f,transparent);top:-60px;right:-60px;"></div>
+    <span class="slide-num">05 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-sky">🏗️ System Architecture</span>
+      <h2 class="title">MERN-inspired <span class="accent-sky">full-stack</span> architecture</h2>
+      <p class="sub" style="margin:10px 0 28px;">React frontend → Express REST API → PostgreSQL database — secured, scalable, and cloud-ready.</p>
+
+      <div class="arch">
+        <div class="arch-row">
+          <div class="arch-box amber-glow" style="min-width:300px;">
+            <span class="icon">🖥️</span>
+            <div class="label">React.js 18 Frontend</div>
+            <div class="sub">Tailwind CSS · React Router v6 · Context API · Axios</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕ HTTPS / REST API</div>
+        <div class="arch-row">
+          <div class="arch-box green-glow" style="min-width:300px;">
+            <span class="icon">⚙️</span>
+            <div class="label">Node.js + Express Backend</div>
+            <div class="sub">JWT Auth · Helmet · Rate Limiting · CORS · Multer</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-row">
+          <div class="arch-box" style="min-width:200px;">
+            <span class="icon">🗄️</span>
+            <div class="label">PostgreSQL</div>
+            <div class="sub">via Prisma ORM</div>
+          </div>
+          <div class="arch-box" style="min-width:200px;">
+            <span class="icon">☁️</span>
+            <div class="label">Cloudinary</div>
+            <div class="sub">Image & Media Storage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 6 — SYSTEM FLOW ══════════════════════════════════════════ -->
+  <section class="slide bg-forest" data-index="5">
+    <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,#14532d,transparent);bottom:-80px;right:-80px;"></div>
+    <span class="slide-num">06 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-green">🔄 System Flow</span>
+      <h2 class="title">How the platform <span class="accent">works</span> — step by step</h2>
+
+      <div class="flow-wrap" style="margin-top:24px;">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text"><h4>Registration & Verification</h4><p>User registers as Investor / Farmer / Landowner → email verified → Admin approves Farmer & Landowner accounts.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text"><h4>Land Listing</h4><p>Landowner registers land (size, location, photos, documents) → Admin approves → Land visible in marketplace.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text"><h4>Farm Creation (Land + Farmer)</h4><p>Landowner hires a Farmer → lease payment processed → Farm entity created linking Land + Farmer + Crop Type.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-text"><h4>Investment (Investor + Trees)</h4><p>Investor browses marketplace → selects trees (e.g. 5 Mango trees @ 5,000 PKR each) → ownership tracked per investor.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-text"><h4>Tree Management & Growth Logs</h4><p>Farmer uploads timestamped photo logs (Seedling → Sapling → Mature) → investor sees real-time updates on dashboard.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-text"><h4>Harvest & Returns</h4><p>Farmer records harvest (yield, weight, date) → system calculates each investor's share → payout confirmed.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 7 — KEY FEATURES ═════════════════════════════════════════ -->
+  <section class="slide bg-dark" data-index="6">
+    <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,#052e16,transparent);bottom:-80px;left:-80px;"></div>
+    <span class="slide-num">07 / 12</span>
+
+    <div style="width:100%;max-width:940px;">
+      <span class="tag tag-green">⭐ Key Features</span>
+      <h2 class="title">What makes it <span class="accent">powerful</span></h2>
+
+      <div class="card-grid g3" style="margin-top:24px;">
+        <div class="card">
+          <div class="card-icon">🛒</div>
+          <h3>Marketplace</h3>
+          <p>Browse plants & farms by type, location, crop, and price with real-time availability.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Investor Dashboard</h3>
+          <p>Real-time investment tracking, earnings breakdown, full transaction history.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📷</div>
+          <h3>Photo Growth Logs</h3>
+          <p>Farmers upload timestamped photos at each growth stage — building investor trust.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <h3>Direct Messaging</h3>
+          <p>Investors and farmers communicate directly inside the platform.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔔</div>
+          <h3>Notifications</h3>
+          <p>Real-time alerts for investment approvals, growth updates, and harvest events.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗓️</div>
+          <h3>Farm Visit Booking</h3>
+          <p>Investors can book physical farm visits to inspect their tree investments in person.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 8 — SECURITY ═════════════════════════════════════════════ -->
+  <section class="slide bg-sky" data-index="7">
+    <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,#0c4a6e,transparent);top:-60px;right:-60px;"></div>
+    <span class="slide-num">08 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-sky">🔐 Security Architecture</span>
+      <h2 class="title">Production-grade <span class="accent-sky">security</span> at every layer</h2>
+      <p class="sub" style="margin:10px 0 24px;">Security was a first-class requirement — not an afterthought. Every route, every token, every password is hardened.</p>
+
+      <div class="sec-grid">
+        <div class="sec-item">
+          <div class="s-icon">🔑</div>
+          <div class="s-title">JWT Authentication</div>
+          <div class="s-desc"><span class="check">✓</span>Stateless, scalable tokens — no session storage required.</div>
+        </div>
+        <div class="sec-item">
+          <div class="s-icon">🔒</div>
+          <div class="s-title">bcrypt Password Hashing</div>
+          <div class="s-desc"><span class="check">✓</span>10 rounds — passwords are never stored in plain text.</div>
+        </div>
+        <div class="sec-item">
+          <div class="s-icon">👤</div>
+          <div class="s-title">Role-Based Access Control</div>
+          <div class="s-desc"><span class="check">✓</span>4 roles with isolated API routes — no cross-role access.</div>
+        </div>
+        <div class="sec-item">
+          <div class="s-icon">🛡️</div>
+          <div class="s-title">Helmet.js Headers</div>
+          <div class="s-desc"><span class="check">✓</span>Prevents XSS, clickjacking, MIME-sniffing attacks.</div>
+        </div>
+        <div class="sec-item">
+          <div class="s-icon">⏱️</div>
+          <div class="s-title">Rate Limiting</div>
+          <div class="s-desc"><span class="check">✓</span>Blocks brute-force and DDoS attempts on all endpoints.</div>
+        </div>
+        <div class="sec-item">
+          <div class="s-icon">🗄️</div>
+          <div class="s-title">Prisma ORM</div>
+          <div class="s-desc"><span class="check">✓</span>Parameterized queries prevent all SQL injection attacks.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 9 — DATABASE ═════════════════════════════════════════════ -->
+  <section class="slide bg-purple" data-index="8">
+    <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,#4c1d95,transparent);top:-80px;left:-80px;"></div>
+    <span class="slide-num">09 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-white">🗄️ Database Design</span>
+      <h2 class="title">Relational model for <span style="color:#c4b5fd;">data integrity</span></h2>
+      <p class="sub" style="margin:10px 0 26px;">PostgreSQL + Prisma ORM — 13 core entities ensuring referential integrity across all financial records.</p>
+
+      <div class="db-row">
+        <div class="db-entity" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--amber-300);">👤 Users</div>
+        <div class="db-entity">🧑‍🌾 Farmers</div>
+        <div class="db-entity">🏡 Landowners</div>
+        <div class="db-entity">📍 Lands</div>
+      </div>
+      <div class="db-arrow">↕ linked via foreign keys</div>
+      <div class="db-row">
+        <div class="db-entity" style="background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--green-400);">🏚️ Farms</div>
+        <div class="db-entity">🌱 Plants</div>
+        <div class="db-entity">🌾 CropTypes</div>
+      </div>
+      <div class="db-arrow">↕</div>
+      <div class="db-row">
+        <div class="db-entity">💰 Investments</div>
+        <div class="db-entity">💳 Payments</div>
+        <div class="db-entity">📷 GrowthLogs</div>
+        <div class="db-entity">🍂 Harvests</div>
+        <div class="db-entity">💬 Messages</div>
+        <div class="db-entity">🔔 Notifications</div>
+      </div>
+
+      <div class="quote" style="margin-top:24px; font-style:normal; font-size:.82rem;">
+        <strong style="color:var(--green-400);">Why PostgreSQL over MongoDB?</strong> — Our data is highly relational. Investors own specific plants in specific farms on specific lands managed by specific farmers. That chain of relationships demands referential integrity that only a relational DB guarantees.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 10 — TECH STACK ══════════════════════════════════════════ -->
+  <section class="slide bg-dark" data-index="9">
+    <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,#14532d,transparent);bottom:-80px;right:-80px;"></div>
+    <span class="slide-num">10 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-green">🚀 Technology Stack</span>
+      <h2 class="title">Industry-standard <span class="accent">tools</span>, chosen for a reason</h2>
+
+      <table class="tech-table" style="margin-top:24px;">
+        <thead>
+          <tr><th>Layer</th><th>Technology</th><th>Why This Choice</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frontend</td>
+            <td><span class="pill">React.js 18</span></td>
+            <td>Component-based, fast, industry standard for modern UIs</td>
+          </tr>
+          <tr>
+            <td>Styling</td>
+            <td><span class="pill">Tailwind CSS</span></td>
+            <td>Rapid, consistent, fully responsive design system</td>
+          </tr>
+          <tr>
+            <td>State Management</td>
+            <td><span class="pill">Context API</span></td>
+            <td>Lightweight global state — no Redux overhead needed</td>
+          </tr>
+          <tr>
+            <td>Backend</td>
+            <td><span class="pill">Node.js + Express</span></td>
+            <td>Non-blocking I/O, same language as frontend, vast ecosystem</td>
+          </tr>
+          <tr>
+            <td>Database</td>
+            <td><span class="pill">PostgreSQL + Prisma</span></td>
+            <td>Relational integrity + type-safe queries for financial records</td>
+          </tr>
+          <tr>
+            <td>Authentication</td>
+            <td><span class="pill">JWT + bcrypt</span></td>
+            <td>Stateless auth, scalable to millions of users</td>
+          </tr>
+          <tr>
+            <td>Media</td>
+            <td><span class="pill">Cloudinary</span></td>
+            <td>Scalable CDN image delivery with auto-optimization</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 11 — ROADMAP ═════════════════════════════════════════════ -->
+  <section class="slide bg-forest" data-index="10">
+    <div class="orb" style="width:380px;height:380px;background:radial-gradient(circle,#14532d,transparent);top:-80px;left:-80px;"></div>
+    <span class="slide-num">11 / 12</span>
+
+    <div style="width:100%;max-width:900px;">
+      <span class="tag tag-green">🔮 Future Roadmap</span>
+      <h2 class="title">Where we go <span class="accent">next</span></h2>
+      <p class="sub" style="margin:10px 0 24px;">The platform is live and functional. Here's what Phase 2 looks like.</p>
+
+      <div class="road-grid">
+        <div class="road-item">
+          <div><div class="road-badge badge-high">High Priority</div></div>
+          <div><h4>💳 Payment Gateway</h4><p>JazzCash / EasyPaisa integration for direct PKR transactions within the platform.</p></div>
+        </div>
+        <div class="road-item">
+          <div><div class="road-badge badge-high">High Priority</div></div>
+          <div><h4>🔔 Real-time Notifications</h4><p>Socket.io integration — instant alerts without page refresh.</p></div>
+        </div>
+        <div class="road-item">
+          <div><div class="road-badge badge-medium">Medium</div></div>
+          <div><h4>📱 Mobile App (PWA)</h4><p>Progressive Web App so farmers can log activities offline in the field.</p></div>
+        </div>
+        <div class="road-item">
+          <div><div class="road-badge badge-medium">Medium</div></div>
+          <div><h4>🌿 CO₂ Offset Calculator</h4><p>Show investors their environmental impact — trees planted vs. carbon offset.</p></div>
+        </div>
+        <div class="road-item">
+          <div><div class="road-badge badge-medium">Medium</div></div>
+          <div><h4>🌐 Urdu Language Support</h4><p>RTL Urdu interface for farmers and landowners with limited English literacy.</p></div>
+        </div>
+        <div class="road-item">
+          <div><div class="road-badge badge-future">Future</div></div>
+          <div><h4>⛓️ Blockchain Transparency</h4><p>On-chain investment records for maximum investor trust and auditability.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 12 — CLOSING ═════════════════════════════════════════════ -->
+  <section class="slide bg-forest" data-index="11">
+    <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,#15803d,transparent);top:-200px;right:-200px;"></div>
+    <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,#fbbf24,transparent);bottom:-150px;left:-150px;opacity:.15;"></div>
+    <span class="slide-num">12 / 12</span>
+
+    <span class="tag tag-green">🌱 Thank You</span>
+    <h1 class="hero glow-text" style="font-size:clamp(2rem,4vw,3.5rem);text-align:center;max-width:800px;">
+      HarvestBridge is not just a tech project — it's a <span class="accent">solution to a real problem</span> facing millions.
+    </h1>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="val">4</div>
+        <div class="lbl">User Roles</div>
+      </div>
+      <div class="stat">
+        <div class="val">13+</div>
+        <div class="lbl">DB Entities</div>
+      </div>
+      <div class="stat">
+        <div class="val">30+</div>
+        <div class="lbl">UI Pages</div>
+      </div>
+      <div class="stat">
+        <div class="val">7</div>
+        <div class="lbl">Security Layers</div>
+      </div>
+    </div>
+
+    <div class="quote" style="max-width:700px;margin-top:32px;text-align:center;border-left:none;border:1px solid rgba(34,197,94,.3);border-radius:14px;padding:22px 30px;">
+      "With payment gateway integration, real-time notifications, and a mobile PWA — HarvestBridge is ready to transform how agricultural investment works in Pakistan."
+    </div>
+
+    <div style="margin-top:28px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <div style="font-size:.82rem;color:rgba(255,255,255,.5);">🌱 Built with React · Node.js · PostgreSQL · Prisma · Cloudinary</div>
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+<!-- ─── NAV BAR ─────────────────────────────────────────── -->
+<div class="nav-bar">
+  <button id="btn-prev" title="Previous (←)">←</button>
+  <div class="dot-row" id="dot-row"></div>
+  <span class="nav-counter" id="counter">1 / 12</span>
+  <button id="btn-next" title="Next (→)">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dots   = [];
+  const total  = slides.length;
+  let current  = 0;
+
+  // ── Build dots ──────────────────────────────────────────
+  const dotRow = document.getElementById('dot-row');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotRow.appendChild(d);
+    dots.push(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    setTimeout(() => slides[current].classList.remove('exit'), 600);
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+    document.getElementById('progress').style.width = `${((current + 1) / total) * 100}%`;
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ')  goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     goTo(current - 1);
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End')  goTo(total - 1);
+  });
+
+  // Touch / swipe
+  let ts = 0, tx = 0;
+  document.addEventListener('touchstart', e => { ts = e.touches[0].clientX; tx = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend',   e => {
+    const dx = ts - e.changedTouches[0].clientX;
+    const dy = tx - e.changedTouches[0].clientY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) goTo(current + (dx > 0 ? 1 : -1));
+  });
+
+  // Init progress bar
+  document.getElementById('progress').style.width = `${(1 / total) * 100}%`;
+</script>
+</body>
+</html>

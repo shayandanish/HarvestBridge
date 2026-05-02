@@ -1,0 +1,66 @@
+.monitoring-view {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.monitoring-view .filters {
+    display: flex;
+    gap: 15px;
+}
+
+.monitoring-view input,
+.monitoring-view select {
+    padding: 10px 15px;
+    border: 1px solid #edf2f7;
+    background: #f7fafc;
+    border-radius: 10px;
+    color: #4a5568;
+    outline: none;
+}
+
+.status-pill.active {
+    background: #ebf8ff;
+    color: #3182ce;
+}
+
+.status-pill.completed {
+    background: #f0fff4;
+    color: #38a169;
+}
+
+.status-pill.cancelled {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+.status-pill.failed {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+.status-pill.refunded {
+    background: #edf2f7;
+    color: #718096;
+}
+
+.amount {
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.icon-btn.cancel:hover {
+    color: #e53e3e;
+    background: #fff5f5;
+}
+
+.icon-btn.retry:hover {
+    color: #3182ce;
+    background: #ebf8ff;
+}
+
+.icon-btn.refund:hover {
+    color: #dd6b20;
+    background: #fffaf0;
+}

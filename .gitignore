@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environment variables
+.env
+frontend/.env
+backend/.env
+.env.local
+
+# Logs
+logs/
+backend/logs/
+*.log
+npm-debug.log*
+
+# Build
+build/
+dist/
+frontend/build/
+backend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Project specific
+backend/uploads/
+backend/dev.db
+backend/lands_response.json
+backend/test_error.json
+backend/test_error.txt
+backend/test_output.json
+backend/test_output.txt
