@@ -82,7 +82,6 @@
 
 .profile-hero-content {
     flex: 1;
-    min-width: 300px;
 }
 
 .profile-hero-name-row {
@@ -288,8 +287,14 @@
 /* Farms List */
 .farms-grid-mini {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 16px;
+}
+
+@media (min-width: 640px) {
+    .farms-grid-mini {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
 }
 
 .farm-pill-premium {

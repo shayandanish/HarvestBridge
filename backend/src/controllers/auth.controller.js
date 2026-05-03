@@ -17,7 +17,7 @@ const {
  */
 const register = async (req, res, next) => {
   try {
-    const { email, phone, password, fullName, role } = req.body;
+    const { email, phone, password, fullName, role, country } = req.body;
 
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
@@ -51,6 +51,11 @@ const register = async (req, res, next) => {
         role,
         emailVerificationToken,
         emailVerificationExpires,
+        profile: {
+          create: {
+            country: country || null,
+          },
+        },
       },
       select: {
         id: true,
@@ -60,6 +65,7 @@ const register = async (req, res, next) => {
         role: true,
         isVerified: true,
         createdAt: true,
+        profile: true,
       },
     });
 

@@ -12,6 +12,7 @@ const AdminLayout = () => {
     
     const [notifications, setNotifications] = useState([]);
     const [showNotifs, setShowNotifs] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -60,9 +61,21 @@ const AdminLayout = () => {
 
     return (
         <div className="admin-container">
-            <Sidebar />
+            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-[1000] lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
             <main className="admin-content">
                 <header className="admin-topbar">
+                    <button 
+                        className="lg:hidden p-2 text-gray-600 focus:outline-none"
+                        onClick={() => setIsSidebarOpen(true)}
+                    >
+                        <i className="fas fa-bars text-xl"></i>
+                    </button>
                     <div className="search-bar">
                         <i className="fas fa-search"></i>
                         <input type="text" placeholder="Global search..." />

@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+import Select from 'react-select';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -12,16 +15,39 @@ const RegisterPage = () => {
         confirmPassword: '',
         fullName: '',
         role: 'investor',
+        country: '',
     });
+    const [countries, setCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     // Redirect if already authenticated
-    React.useEffect(() => {
+    useEffect(() => {
         if (isAuthenticated) {
             navigate('/dashboard');
         }
     }, [isAuthenticated, navigate]);
+
+    // Fetch countries for the dropdown
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flags');
+                const data = await response.json();
+                const formattedCountries = data.map(country => ({
+                    value: country.name.common,
+                    label: country.name.common,
+                    flag: country.flags.svg || country.flags.png,
+                    code: country.cca2.toLowerCase()
+                })).sort((a, b) => a.label.localeCompare(b.label));
+                setCountries(formattedCountries);
+            } catch (err) {
+                console.error("Error fetching countries:", err);
+            }
+        };
+        fetchCountries();
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -60,8 +86,8 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center px-4 py-12">
-            <div className="card max-w-md w-full shadow-2xl rounded-[2.5rem] p-8 md:p-10 border border-white/50 backdrop-blur-sm">
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center px-4 py-8 md:py-12">
+            <div className="card max-w-md w-full shadow-2xl border border-white/50 backdrop-blur-sm">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
                     <p className="text-gray-600">Join the HarvestBridge Platform</p>
@@ -105,18 +131,48 @@ const RegisterPage = () => {
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Phone (Optional)
-                        </label>
-                        <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="input-field"
-                            placeholder="+1234567890"
-                        />
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Country of Residence
+                            </label>
+                            <Select
+                                options={countries}
+                                value={selectedCountry}
+                                onChange={(option) => {
+                                    setSelectedCountry(option);
+                                    setFormData({ ...formData, country: option.value });
+                                }}
+                                getOptionLabel={e => (
+                                    <div className="flex items-center gap-3">
+                                        <img src={e.flag} alt={e.label} className="w-6 h-4 object-cover rounded-sm" />
+                                        <span className="text-gray-900">{e.label}</span>
+                                    </div>
+                                )}
+                                placeholder="Search & select country..."
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                isSearchable={true}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Phone Number
+                            </label>
+                            <PhoneInput
+                                country={selectedCountry?.code || 'pk'}
+                                value={formData.phone}
+                                onChange={(phone) => setFormData({ ...formData, phone })}
+                                className="international-phone-input"
+                                inputClassName="!w-full !h-[50px] !rounded-r-2xl !border-gray-300 !text-gray-700 !text-base focus:!ring-2 focus:!ring-primary-500 !pl-4"
+                                countrySelectorStyleProps={{
+                                    buttonClassName: "!h-[50px] !rounded-l-2xl !border-gray-300 !bg-white !px-3",
+                                    flagClassName: "!w-8 !h-6 !rounded-sm"
+                                }}
+                            />
+                        </div>
                     </div>
 
                     <div>

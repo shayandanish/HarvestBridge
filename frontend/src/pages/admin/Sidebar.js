@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -12,7 +12,7 @@ const Sidebar = () => {
     };
 
     return (
-        <aside className="admin-sidebar">
+        <aside className={`admin-sidebar ${!isOpen ? 'closed' : ''}`}>
             <div className="sidebar-header">
                 <h2>AgroControl</h2>
             </div>

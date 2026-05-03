@@ -225,3 +225,16 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
+@media (max-width: 640px) {
+    .land-selector-group {
+        padding: 1rem;
+    }
+    .selection-sidebar {
+        padding: 1rem;
+        border-radius: 1.5rem;
+    }
+    .submit-btn-premium {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+}

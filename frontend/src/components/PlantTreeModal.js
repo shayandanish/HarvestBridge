@@ -132,7 +132,7 @@ const PlantTreeModal = ({ isOpen, onClose, onSuccess, leasedFarms, availableLand
 
     return (
         <div className="fixed inset-0 plant-modal-overlay flex items-center justify-center p-4 font-sans">
-            <div className="plant-modal-container p-6 w-full max-w-7xl rounded-[3rem] flex flex-col max-h-[95vh]">
+            <div className="plant-modal-container p-4 sm:p-6 w-full max-w-7xl rounded-2xl sm:rounded-[3rem] flex flex-col max-h-[95vh]">
                 {/* Header - Compact */}
                 <div className="flex justify-between items-center mb-6 shrink-0 border-b border-emerald-50 pb-4">
                     <div className="flex items-center gap-3">

@@ -144,19 +144,19 @@ const HomePage = () => {
             {/* Hero Section */}
             <div className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 2xl:pt-56 overflow-hidden">
                 {/* Decorative background blurs */}
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-300/20 rounded-full blur-[120px] mix-blend-multiply pointer-events-none animate-pulse" style={{ animationDuration: '4s' }}></div>
-                <div className="absolute -bottom-20 -left-20 w-[600px] h-[600px] bg-sky-200/40 rounded-full blur-[120px] mix-blend-multiply pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[800px] md:h-[800px] bg-primary-300/20 rounded-full blur-[60px] md:blur-[120px] mix-blend-multiply pointer-events-none animate-pulse" style={{ animationDuration: '4s' }}></div>
+                <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] md:w-[600px] md:h-[600px] bg-sky-200/40 rounded-full blur-[60px] md:blur-[120px] mix-blend-multiply pointer-events-none"></div>
                 
                 <div className="container mx-auto px-6 relative z-10 text-center">
                     
-                    <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-slate-900 tracking-tighter leading-[1.05] mb-8 mx-auto max-w-5xl">
+                    <h1 className="text-4xl md:text-7xl lg:text-[5.5rem] font-black text-slate-900 tracking-tighter leading-[1.05] mb-8 mx-auto max-w-5xl">
                         Invest in Agriculture.<br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-emerald-400">
                             Grow Your Future.
                         </span>
                     </h1>
                     
-                    <p className="text-lg md:text-2xl text-slate-500 mb-12 leading-relaxed font-medium max-w-3xl mx-auto">
+                    <p className="text-base md:text-2xl text-slate-500 mb-12 leading-relaxed font-medium max-w-3xl mx-auto px-4 sm:px-0">
                         We connect visionary investors with expert farmers. Support sustainable agriculture while building wealth through verified, trackable investments.
                     </p>
                     
@@ -372,8 +372,8 @@ const HomePage = () => {
                 <div className="px-4 md:px-8 mb-32" id="investor-showcase">
                     <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[3rem] p-10 md:p-20 text-white relative overflow-hidden shadow-2xl">
                         {/* Abstract background shapes */}
-                        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-600/20 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none"></div>
-                        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-sky-500/10 blur-[100px] rounded-full -ml-48 -mb-48 pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-primary-600/20 blur-[60px] md:blur-[100px] rounded-full -mr-24 -mt-24 md:-mr-48 md:-mt-48 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-sky-500/10 blur-[60px] md:blur-[100px] rounded-full -ml-24 -mb-24 md:-ml-48 md:-mb-48 pointer-events-none"></div>
                         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] opacity-50 mask-image:linear-gradient(to_bottom,white,transparent)"></div>
 
                         <div className="relative z-10 text-center max-w-3xl mx-auto mb-16">

@@ -4,7 +4,11 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gray-50 text-gray-900 overflow-x-hidden w-full;
+  }
+  
+  #root {
+    @apply w-full overflow-x-hidden;
   }
 }
 
@@ -26,6 +30,32 @@
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-md p-6;
+    @apply bg-white rounded-2xl sm:rounded-[2.5rem] p-6 sm:p-10 shadow-md;
+  }
+
+  /* Custom React Select Styles */
+  .react-select-container .react-select__control {
+    @apply !border-gray-300 !rounded-2xl !min-h-[50px] !px-2 focus-within:!ring-2 focus-within:!ring-primary-500 !shadow-none !border;
+  }
+
+  .react-select-container .react-select__menu {
+    @apply !rounded-xl !shadow-xl !border-gray-100 !mt-2 !overflow-hidden;
+  }
+
+  .react-select-container .react-select__option--is-focused {
+    @apply !bg-primary-50 !text-primary-900;
+  }
+
+  .react-select-container .react-select__option--is-selected {
+    @apply !bg-primary-600 !text-white;
+  }
+
+  /* International Phone Input Styles */
+  .international-phone-input {
+    @apply !w-full;
+  }
+
+  .react-international-phone-input-container {
+    @apply !w-full;
   }
 }

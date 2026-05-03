@@ -11,14 +11,17 @@
 }
 
 .admin-topbar {
-    height: 70px;
+    height: auto;
+    min-height: 70px;
     background: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 30px;
+    padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     z-index: 10;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .search-bar {
@@ -27,7 +30,19 @@
     background: #f1f5f9;
     padding: 10px 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
+    order: 3;
+}
+
+@media (min-width: 768px) {
+    .admin-topbar {
+        padding: 0 30px;
+        flex-wrap: nowrap;
+    }
+    .search-bar {
+        order: unset;
+    }
 }
 
 .search-bar i {
