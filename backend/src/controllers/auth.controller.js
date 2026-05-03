@@ -34,8 +34,10 @@ const register = async (req, res, next) => {
       );
     }
 
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
+    // Hash password — use 10 rounds (good balance of security vs speed)
+    // For even faster dev: reduce to 8, but 10 is recommended for production
+    const saltRounds = process.env.NODE_ENV === 'production' ? 10 : 8;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
 
     // Generate email verification token
     const emailVerificationToken = generateToken();
@@ -69,14 +71,14 @@ const register = async (req, res, next) => {
       },
     });
 
-    // Send verification email
+    // Send verification email ASYNCHRONOUSLY (fire-and-forget)
+    // Do NOT await — this was blocking the response for 2-10 seconds
     const verificationUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email?token=${emailVerificationToken}`;
-    try {
-      await sendVerificationEmail(email, fullName, verificationUrl);
-    } catch (emailError) {
-      console.error("Failed to send verification email:", emailError);
-      // Continue registration even if email fails
-    }
+    setImmediate(() => {
+      sendVerificationEmail(email, fullName, verificationUrl).catch((emailError) => {
+        console.error("Failed to send verification email:", emailError);
+      });
+    });
 
     // Generate tokens for immediate login after registration
     const accessToken = generateAccessToken({
