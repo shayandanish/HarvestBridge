@@ -20,7 +20,7 @@ const AdminOverview = () => {
 
     const fetchStats = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/dashboard/stats`,
                 { headers: { Authorization: `Bearer ${token}` } }

@@ -15,7 +15,7 @@ const CampaignCenter = () => {
 
     const fetchCampaigns = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/campaigns`,
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -31,7 +31,7 @@ const CampaignCenter = () => {
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             const payload = {
                 ...newCampaign,
                 recipientFilter: newCampaign.roleFilter === 'all' ? {} : { role: newCampaign.roleFilter }
@@ -51,7 +51,7 @@ const CampaignCenter = () => {
     const handleSend = async (id) => {
         if (!window.confirm('Send this campaign to all matching users now?')) return;
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             await axios.post(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/campaigns/${id}/send`,
                 {},

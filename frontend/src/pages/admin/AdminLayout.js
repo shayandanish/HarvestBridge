@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Sidebar from './Sidebar';
 import { adminService } from '../../services/adminService';
 import { formatDistanceToNow } from 'date-fns';
@@ -7,8 +8,8 @@ import './AdminLayout.css';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user'));
-    const token = localStorage.getItem('token');
+    const { user, loading, isAuthenticated } = useAuth();
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
     
     const [notifications, setNotifications] = useState([]);
     const [showNotifs, setShowNotifs] = useState(false);
@@ -53,7 +54,18 @@ const AdminLayout = () => {
         }
     };
 
-    if (!token || !user || user.role !== 'admin') {
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+                    <p className="text-gray-500 font-medium">Loading Admin Console...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated || user?.role !== 'admin') {
         return <Navigate to="/admin/login" replace />;
     }
 

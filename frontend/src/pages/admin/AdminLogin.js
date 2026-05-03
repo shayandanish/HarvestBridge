@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
+    const { user: authUser, isAuthenticated } = useAuth();
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -52,7 +54,7 @@ const AdminLogin = () => {
                 {error && <div className="admin-login-error">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="admin-login-form">
-                    {localStorage.getItem('token') && JSON.parse(localStorage.getItem('user'))?.role === 'admin' ? (
+                    {(isAuthenticated && authUser?.role === 'admin') || (localStorage.getItem('token') && JSON.parse(localStorage.getItem('user'))?.role === 'admin') ? (
                         <div className="admin-already-logged">
                             <p>You are already logged in as administrator.</p>
                             <button

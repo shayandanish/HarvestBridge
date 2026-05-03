@@ -14,7 +14,7 @@ const PaymentMonitoring = () => {
 
     const fetchPayments = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/payments`,
                 { params: filters, headers: { Authorization: `Bearer ${token}` } }
@@ -29,7 +29,7 @@ const PaymentMonitoring = () => {
 
     const handleAction = async (id, action) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             await axios.post(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/payments/${id}/${action}`,
                 {},

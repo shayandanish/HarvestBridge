@@ -16,7 +16,7 @@ const DisputeCenter = () => {
 
     const fetchDisputes = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             const response = await axios.get(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/disputes`,
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -31,7 +31,7 @@ const DisputeCenter = () => {
 
     const handleUpdateStatus = async (id, status) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             await axios.put(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/disputes/${id}/status`,
                 { status },
@@ -49,7 +49,7 @@ const DisputeCenter = () => {
     const handleResolve = async (id) => {
         if (!resolutionText) return alert('Please provide resolution notes');
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
             await axios.post(
                 `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1'}/admin/disputes/${id}/resolve`,
                 { resolution: resolutionText },
