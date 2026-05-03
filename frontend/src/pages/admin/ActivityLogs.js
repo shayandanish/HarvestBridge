@@ -60,8 +60,8 @@ const ActivityLogs = () => {
                 </div>
             </div>
 
-            <div className="logs-container">
-                <table className="admin-table">
+            <div className="logs-container" style={{ overflowX: 'auto' }}>
+                <table className="admin-table" style={{ minWidth: '800px' }}>
                     <thead>
                         <tr>
                             <th>Timestamp</th>

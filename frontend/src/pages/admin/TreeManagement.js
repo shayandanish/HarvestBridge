@@ -81,22 +81,23 @@ const TreeManagement = () => {
     }
 
     return (
-        <div className="p-8 bg-gray-50 min-h-screen">
-            <div className="flex justify-between items-center mb-8">
+        <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                 <div>
                     <h1 className="text-3xl font-black text-gray-900 tracking-tight">Tree Management</h1>
                     <p className="text-sm text-gray-500 mt-1">Manage the types of trees investors can plant.</p>
                 </div>
                 <button
                     onClick={() => handleOpenModal()}
-                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wide text-sm shadow-lg transition-all"
+                    className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wide text-xs sm:text-sm shadow-lg transition-all"
                 >
                     + Add New Tree
                 </button>
             </div>
 
-            <div className="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden">
-                <table className="w-full text-left border-collapse">
+            <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr className="bg-gray-50 border-b border-gray-100">
                             <th className="py-4 px-6 text-xs font-black text-gray-400 uppercase tracking-widest">Tree Name</th>
@@ -146,7 +147,8 @@ const TreeManagement = () => {
                             ))
                         )}
                     </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
 
             {/* Modal */}

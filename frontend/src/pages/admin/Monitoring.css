@@ -1,66 +1,142 @@
+/* ============================================
+   MONITORING (Payments/Investments) — Responsive
+   ============================================ */
+
 .monitoring-view {
     background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+/* ---- SECTION HEADER ---- */
+.monitoring-view .section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.monitoring-view .section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a202c;
 }
 
 .monitoring-view .filters {
     display: flex;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .monitoring-view input,
 .monitoring-view select {
-    padding: 10px 15px;
+    padding: 10px 12px;
     border: 1px solid #edf2f7;
     background: #f7fafc;
     border-radius: 10px;
     color: #4a5568;
     outline: none;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.status-pill.active {
-    background: #ebf8ff;
-    color: #3182ce;
+/* ---- TABLE ---- */
+.monitoring-view .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
 }
 
-.status-pill.completed {
-    background: #f0fff4;
-    color: #38a169;
+.monitoring-view .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 620px;
 }
 
-.status-pill.cancelled {
-    background: #fff5f5;
-    color: #e53e3e;
+.monitoring-view .admin-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
-.status-pill.failed {
-    background: #fff5f5;
-    color: #e53e3e;
+.monitoring-view .admin-table td {
+    padding: 13px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+    color: #374151;
+    vertical-align: middle;
 }
 
-.status-pill.refunded {
-    background: #edf2f7;
-    color: #718096;
+.monitoring-view .admin-table tr:last-child td { border-bottom: none; }
+
+/* ---- STATUS PILLS ---- */
+.status-pill {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 5px;
+    display: inline-block;
+    white-space: nowrap;
 }
 
+.status-pill.draft     { background: #edf2f7; color: #4a5568; }
+.status-pill.sent      { background: #c6f6d5; color: #22543d; }
+.status-pill.sending   { background: #ebf8ff; color: #3182ce; }
+.status-pill.active    { background: #ebf8ff; color: #3182ce; }
+.status-pill.completed { background: #f0fff4; color: #38a169; }
+.status-pill.cancelled { background: #fff5f5; color: #e53e3e; }
+.status-pill.failed    { background: #fff5f5; color: #e53e3e; }
+.status-pill.refunded  { background: #edf2f7; color: #718096; }
+.status-pill.pending   { background: #fefce8; color: #a16207; }
+
+/* ---- AMOUNTS ---- */
 .amount {
     font-weight: 700;
     color: #2d3748;
 }
 
-.icon-btn.cancel:hover {
-    color: #e53e3e;
-    background: #fff5f5;
+/* ---- ACTION BUTTONS ---- */
+.icon-btn.cancel:hover { color: #e53e3e; background: #fff5f5; }
+.icon-btn.retry:hover  { color: #3182ce; background: #ebf8ff; }
+.icon-btn.refund:hover { color: #dd6b20; background: #fffaf0; }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (min-width: 640px) {
+    .monitoring-view {
+        padding: 24px;
+    }
+
+    .monitoring-view .section-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .monitoring-view .section-header h2 { font-size: 20px; }
+
+    .monitoring-view .filters {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .monitoring-view select { width: auto; min-width: 140px; }
 }
 
-.icon-btn.retry:hover {
-    color: #3182ce;
-    background: #ebf8ff;
-}
-
-.icon-btn.refund:hover {
-    color: #dd6b20;
-    background: #fffaf0;
+@media (min-width: 1024px) {
+    .monitoring-view { padding: 28px; }
+    .monitoring-view .section-header h2 { font-size: 22px; }
 }

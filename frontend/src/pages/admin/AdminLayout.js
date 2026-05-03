@@ -92,24 +92,12 @@ const AdminLayout = () => {
                         <i className="fas fa-search"></i>
                         <input type="text" placeholder="Global search..." />
                     </div>
-                    <div style={{ marginRight: 'auto', marginLeft: '20px' }}>
+                    <div className="topbar-dashboard-link">
                         <button
                             onClick={() => navigate('/admin/dashboard')}
-                            style={{
-                                background: 'transparent',
-                                border: '1px solid #e5e7eb',
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                color: '#4b5563',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                fontSize: '14px',
-                                fontWeight: '500'
-                            }}
+                            className="dashboard-btn"
                         >
-                            <i className="fas fa-th-large"></i> Admin Dashboard
+                            <i className="fas fa-th-large"></i> <span>Admin Dashboard</span>
                         </button>
                     </div>
                     <div className="admin-profile">

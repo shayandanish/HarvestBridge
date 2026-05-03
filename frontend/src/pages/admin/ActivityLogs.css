@@ -1,29 +1,173 @@
-.activity-logs .action-tag {
-    background: #f1f5f9;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
+/* ============================================
+   ACTIVITY LOGS — Responsive
+   ============================================ */
+
+.activity-logs {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+/* ---- SECTION HEADER ---- */
+.activity-logs .section-header {
+    margin-bottom: 20px;
+}
+
+.activity-logs .section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.activity-logs .section-header p {
+    font-size: 13px;
+    color: #718096;
+    margin-top: 2px;
+}
+
+/* ---- FILTERS ---- */
 .activity-logs .filters-bar {
     display: flex;
-    gap: 20px;
-    background: white;
-    padding: 20px;
+    flex-direction: column;
+    gap: 10px;
+    background: #f8fafc;
+    padding: 14px;
     border-radius: 12px;
     margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+}
+
+.activity-logs .filters-bar select {
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 8px;
+    color: #4a5568;
+    outline: none;
+    font-size: 13px;
+    width: 100%;
 }
 
 .date-filters {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .date-filters input {
-    padding: 8px;
+    padding: 8px 10px;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border-radius: 8px;
+    background: white;
+    font-size: 13px;
+    flex: 1;
+    min-width: 0;
+}
+
+.date-filters span {
+    color: #a0aec0;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+/* ---- TABLE ---- */
+.activity-logs .logs-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+}
+
+.activity-logs .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.activity-logs .admin-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.activity-logs .admin-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+    color: #374151;
+}
+
+.activity-logs .admin-table tr:last-child td { border-bottom: none; }
+
+/* ---- ACTION TAG ---- */
+.activity-logs .action-tag {
+    background: #f1f5f9;
+    padding: 3px 9px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #475569;
+    white-space: nowrap;
+}
+
+/* ---- PAGINATION ---- */
+.activity-logs .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.activity-logs .pagination button {
+    padding: 8px 18px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.activity-logs .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+.activity-logs .pagination button:hover:not(:disabled) { background: #f7fafc; border-color: #cbd5e0; }
+
+.activity-logs .pagination span {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (min-width: 640px) {
+    .activity-logs {
+        padding: 24px;
+    }
+
+    .activity-logs .section-header h2 { font-size: 20px; }
+
+    .activity-logs .filters-bar {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .activity-logs .filters-bar select { width: auto; min-width: 160px; }
+}
+
+@media (min-width: 1024px) {
+    .activity-logs { padding: 28px; }
+    .activity-logs .section-header h2 { font-size: 22px; }
 }

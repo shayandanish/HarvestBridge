@@ -1,165 +1,225 @@
+/* ============================================
+   SETTINGS PANEL — Responsive
+   ============================================ */
 
 .settings-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
 }
 
 .settings-header {
-    margin-bottom: 30px;
+    margin-bottom: 4px;
 }
 
 .settings-header h2 {
-    font-size: 24px;
-    color: #1e293b;
-    margin: 0 0 8px 0;
+    font-size: 20px;
     font-weight: 700;
+    color: #1a202c;
 }
 
 .settings-header p {
-    color: #64748b;
-    font-size: 15px;
-    margin: 0;
-}
-
-.settings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
-}
-
-.settings-card {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.card-header i {
-    font-size: 20px;
-    color: #3b82f6;
-}
-
-.card-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1e293b;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #475569;
-    margin-bottom: 8px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: all 0.2s;
-    background: #f8fafc;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.save-btn {
-    width: 100%;
-    padding: 12px;
-    background: #1e293b;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 10px;
-}
-
-.save-btn:hover {
-    background: #0f172a;
-    transform: translateY(-1px);
-}
-
-.save-btn:active {
-    transform: translateY(0);
+    color: #718096;
+    font-size: 13px;
+    margin-top: 2px;
 }
 
 .settings-error {
-    background: #fef2f2;
-    color: #b91c1c;
-    padding: 12px 20px;
+    background: #fff5f5;
+    color: #e53e3e;
+    padding: 12px 16px;
     border-radius: 10px;
-    margin-bottom: 25px;
-    font-size: 14px;
-    border: 1px solid #fee2e2;
+    font-size: 13px;
+    border: 1px solid #fed7d7;
 }
 
 .settings-success {
-    background: #f0fdf4;
-    color: #15803d;
-    padding: 12px 20px;
+    background: #f0fff4;
+    color: #276749;
+    padding: 12px 16px;
     border-radius: 10px;
-    margin-bottom: 25px;
-    font-size: 14px;
-    border: 1px solid #dcfce7;
+    font-size: 13px;
+    border: 1px solid #c6f6d5;
 }
 
+.settings-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #718096;
+    font-size: 15px;
+}
+
+/* ---- GRID ---- */
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* ---- CARD ---- */
+.settings-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.settings-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.settings-card .card-header i {
+    font-size: 18px;
+    color: #2563eb;
+    width: 36px;
+    height: 36px;
+    background: #eff6ff;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-card .card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+}
+
+/* ---- FORM GROUPS ---- */
+.settings-card .form-group {
+    margin-bottom: 16px;
+}
+
+.settings-card .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+}
+
+.settings-card .form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1a202c;
+    outline: none;
+    background: #f8fafc;
+    transition: border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+}
+
+.settings-card .form-group input:focus {
+    border-color: #2563eb;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.settings-card .save-btn {
+    padding: 11px 22px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.settings-card .save-btn:hover { background: #1d4ed8; }
+
+/* ---- PLATFORM CONFIG SECTION ---- */
 .platform-config-section {
-    padding-top: 30px;
-    border-top: 2px dashed #e2e8f0;
+    margin-top: 8px;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.platform-setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.platform-setting-item > span:first-child {
+    font-weight: 600;
+    color: #374151;
+}
+
+.platform-setting-item > span:last-child {
+    color: #718096;
+    font-family: monospace;
+    font-size: 12px;
+    text-align: right;
 }
 
 .empty-settings {
     text-align: center;
     padding: 40px;
-    color: #94a3b8;
+    color: #a0aec0;
 }
 
 .empty-settings i {
-    font-size: 40px;
-    margin-bottom: 15px;
-    opacity: 0.5;
+    font-size: 36px;
+    margin-bottom: 14px;
+    display: block;
+    color: #e2e8f0;
 }
 
 .empty-settings p {
-    margin: 0;
-    font-size: 15px;
+    font-size: 14px;
 }
 
-.settings-loading {
-    padding: 100px;
-    text-align: center;
-    color: #64748b;
-    font-size: 16px;
-}
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
 
-@media (max-width: 640px) {
-    .settings-grid {
-        grid-template-columns: 1fr;
+@media (min-width: 640px) {
+    .settings-header h2 { font-size: 22px; }
+    .settings-card      { padding: 24px; }
+
+    .settings-card .save-btn {
+        width: auto;
+        min-width: 160px;
     }
+}
+
+@media (min-width: 768px) {
+    .settings-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .settings-header h2 { font-size: 24px; }
+    .settings-card      { padding: 28px; }
 }
