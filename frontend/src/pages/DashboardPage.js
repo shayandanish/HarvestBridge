@@ -182,7 +182,7 @@ const DashboardPage = () => {
             {/* Dashboard Content */}
             <div className="container mx-auto px-6 py-8">
                 <div className="mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2">
                         Welcome, {user?.fullName}!
                     </h2>
                     <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getRoleBadgeColor(user?.role)}`}>
